@@ -15,10 +15,7 @@ require('dotenv').config()
 const app = express()
 
 app.use(cors({
-    // origin: "https://blogs-app-frontend-ebon.vercel.app",
-    // origin: process.env.CLIENT_URL,
-    origin: true,
-    // to allow cookies exchange between client and server
+    origin: process.env.CLIENT_URL,
     credentials: true
 }))
 
@@ -53,7 +50,8 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        sameSite: 'lax',
+        sameSite: 'none',
+        // sameSite: 'lax',
         // sameSite: 'strict',
         secure: true
     }
