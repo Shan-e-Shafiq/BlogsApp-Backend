@@ -48,7 +48,7 @@ app.use(session({
         httpOnly: true,
         sameSite: 'lax',
         // sameSite: 'strict',
-        // secure: true
+        secure: true
     }
 }));
 app.use(passport.initialize());
@@ -72,15 +72,15 @@ app.use('/api', routes)
 
 // TESTING ROUTE
 
-app.get('/api/testingRoute', (req, res) => {
-    console.log(req.headers.cookie.split('=')[1])
-    return res.status(200).json({ msg: "created" })
-})
+// app.get('/api/testingRoute', (req, res) => {
+//     console.log(req.headers.cookie.split('=')[1])
+//     return res.status(200).json({ msg: "created" })
+// })
 
 
 app.listen(3000, async () => {
     await ConnectToDB()
-    console.log("http://localhost:3000")
+    // console.log("http://localhost:3000")
 })
 
 

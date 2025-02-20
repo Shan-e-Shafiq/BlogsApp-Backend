@@ -22,7 +22,7 @@ async function getAllBlogs(req, res) {
             hasMoreBlogs: hasMoreBlogs
         })
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ msg: "Internal server error" })
     }
 }
@@ -30,7 +30,7 @@ async function getAllBlogs(req, res) {
 async function getBlogsPublisherID(req, res) {
     try {
         let { publisherId, page, limit } = req.query
-        console.log('publisherId', publisherId)
+        // console.log('publisherId', publisherId)
         page = Number(page)
         limit = Number(limit)
         const start = page * limit
@@ -45,7 +45,7 @@ async function getBlogsPublisherID(req, res) {
             hasMoreBlogs: hasMoreBlogs
         })
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ msg: "Internal server error" })
     }
 }
@@ -69,7 +69,7 @@ async function getLikedBlogs(req, res) {
         return res.status(200).json({ blogs: blogs })
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ msg: "Internal server error" })
     }
 }
@@ -95,7 +95,7 @@ async function getBlogById(req, res) {
         const hasMoreComments = blog[0].commentsLength > blog[0].commentsArray.length
         return res.status(200).json({ blog: { ...blog[0], hasMoreComments: hasMoreComments } })
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ msg: "Internal server error" })
     }
 }
@@ -120,7 +120,7 @@ async function getBlogComments(req, res) {
         const hasMoreComments = comments[0].length > stop
         return res.status(200).json({ ...comments[0], hasMoreComments: hasMoreComments })
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ msg: "Internal server error" })
     }
 }
@@ -128,13 +128,13 @@ async function getBlogComments(req, res) {
 async function addNewBlog(req, res) {
     try {
         const newBlog = await blogModel.create(req.body)
-        console.log(newBlog)
+        // console.log(newBlog)
         return res.status(201).json({
             msg: "Blog posted successfully",
             blog: newBlog
         })
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ msg: "Internal server error" })
     }
 }
@@ -165,7 +165,7 @@ async function editBlog(req, res) {
             blog: blog
         })
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ msg: "Internal server error" })
     }
 }
@@ -179,7 +179,7 @@ async function deleteBlog(req, res) {
         return res.status(200).json({ msg: "Deleted Successfully" })
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ msg: "Internal server error" })
     }
 }
@@ -218,7 +218,7 @@ async function likeBlog(req, res) {
         return res.status(200).json({ msg: "Liked" })
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ msg: "Internal server error" })
     }
 }
@@ -257,7 +257,7 @@ async function unLikeBlog(req, res) {
         return res.status(200).json({ msg: "unLiked" })
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ msg: "Internal server error" })
     }
 }
@@ -287,7 +287,7 @@ async function postComment(req, res) {
         return res.status(201).json({ msg: 'Comment posted successfully' })
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ msg: "Internal server error" })
     }
 }
