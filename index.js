@@ -56,6 +56,7 @@ app.use(passport.session());
 app.use(cors({
     origin: process.env.CLIENT_URL,
     // to allow cookies exchange between client and server
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }))
 app.use(express.urlencoded({ extended: true }))
