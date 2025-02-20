@@ -55,8 +55,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors({
     origin: process.env.CLIENT_URL,
-    // to allow cookies exchange between client and server
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    // to allow cookies exchange between client and server
     credentials: true
 }))
 app.use(express.urlencoded({ extended: true }))
@@ -66,7 +66,7 @@ app.use(cookieParser())
 // ROUTES
 
 app.get('/', (req, res) => {
-    res.status(200).json({ msg: 'server is up', server: process.env.SERVER_URL, client: process.env.CLIENT_URL })
+    res.status(200).json({ msg: 'server is up' })
 })
 app.use('/api', routes)
 
@@ -78,8 +78,9 @@ app.use('/api', routes)
 //     return res.status(200).json({ msg: "created" })
 // })
 
+const PORT = process.env.PORT || 3000
 
-app.listen(3000, async () => {
+app.listen(PORT, async () => {
     await ConnectToDB()
     // console.log("http://localhost:3000")
 })
