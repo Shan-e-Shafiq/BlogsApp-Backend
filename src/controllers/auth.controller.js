@@ -9,7 +9,7 @@ const cookieOptions = {
     httpOnly: true,
     sameSite: 'lax',
     // sameSite:'strict',
-    // secure:true,
+    secure: true,
 }
 
 function GenerateAccessToken(payload) {
@@ -56,7 +56,7 @@ async function LoginUser(req, res) {
             }
         })
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ msg: "Internal server error" })
     }
 }
@@ -103,7 +103,7 @@ async function SignupUser(req, res) {
         })
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ msg: "Internal server error" })
     }
 }
@@ -115,7 +115,7 @@ async function LogoutUser(req, res) {
         })
         return res.status(200).json({ msg: "Logout Successful" })
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ msg: "Internal server error" })
     }
 }
@@ -129,7 +129,7 @@ async function refreshAccessToken(req, res) {
             accessToken: newAccessToken,
         })
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ msg: "Internal server error" })
     }
 }
@@ -156,7 +156,7 @@ async function getUserData(req, res) {
         res.status(200).json({ ...userData, accessToken: newAccessToken })
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ msg: "Internal server error" })
     }
 }
@@ -203,7 +203,7 @@ function SocialLoginSuccess(req, res) {
         })
         res.redirect(`${process.env.CLIENT_URL}/auth`)
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res.status(500).json({ msg: "Internal server error" })
     }
 }
