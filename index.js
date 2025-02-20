@@ -66,7 +66,7 @@ app.use(cookieParser())
 // ROUTES
 
 app.get('/', (req, res) => {
-    res.status(200).json({ msg: 'server is up' })
+    res.status(200).json({ msg: 'server is up', client: process.env.CLIENT_URL, server: process.env.SERVER_URL, port: process.env.PORT })
 })
 app.use('/api', routes)
 
