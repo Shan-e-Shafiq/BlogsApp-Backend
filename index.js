@@ -54,7 +54,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors({
-    origin: "*",
+    origin: "https://blogs-app-frontend-ebon.vercel.app",
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     // to allow cookies exchange between client and server
     credentials: true
