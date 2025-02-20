@@ -54,7 +54,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors({
-    origin: process.env.CLIENT_URL,
+    origin: "*",
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     // to allow cookies exchange between client and server
     credentials: true
