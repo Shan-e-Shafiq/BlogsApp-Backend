@@ -14,6 +14,13 @@ require('dotenv').config()
 
 const app = express()
 
+app.use(cors({
+    // origin: "https://blogs-app-frontend-ebon.vercel.app",
+    // origin: process.env.CLIENT_URL,
+    origin: true,
+    // to allow cookies exchange between client and server
+    credentials: true
+}))
 
 // PASSPORT.JS SETUP FOR SOCIAL AUTH
 
@@ -53,12 +60,6 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cors({
-    origin: "https://blogs-app-frontend-ebon.vercel.app",
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    // to allow cookies exchange between client and server
-    credentials: true
-}))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cookieParser())
