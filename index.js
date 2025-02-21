@@ -22,43 +22,43 @@ app.use(cors({
 
 // PASSPORT.JS SETUP FOR SOCIAL AUTH
 
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_AUTH_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
-    callbackURL: `${process.env.SERVER_URL}/api/user/auth/google/callback`,
-}, GoogleLogin))
+// passport.use(new GoogleStrategy({
+//     clientID: process.env.GOOGLE_AUTH_CLIENT_ID,
+//     clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
+//     callbackURL: `${process.env.SERVER_URL}/api/user/auth/google/callback`,
+// }, GoogleLogin))
 
-passport.use(new FacebookStrategy({
-    clientID: process.env.FACEBOOK_AUTH_CLIENT_ID,
-    clientSecret: process.env.FACEBOOK_AUTH_CLIENT_SECRET,
-    callbackURL: `${process.env.SERVER_URL}/api/user/auth/facebook/callback`,
-    profileFields: ['id', 'displayName', 'email']
-}, FacebookLogin));
+// passport.use(new FacebookStrategy({
+//     clientID: process.env.FACEBOOK_AUTH_CLIENT_ID,
+//     clientSecret: process.env.FACEBOOK_AUTH_CLIENT_SECRET,
+//     callbackURL: `${process.env.SERVER_URL}/api/user/auth/facebook/callback`,
+//     profileFields: ['id', 'displayName', 'email']
+// }, FacebookLogin));
 
-passport.serializeUser((user, done) => {
-    done(null, user);
-});
-passport.deserializeUser((user, done) => {
-    done(null, user);
-});
+// passport.serializeUser((user, done) => {
+//     done(null, user);
+// });
+// passport.deserializeUser((user, done) => {
+//     done(null, user);
+// });
 
 
-// MIDDLEWARES
+// // MIDDLEWARES
 
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        httpOnly: true,
-        sameSite: 'lax',
-        // sameSite: 'lax',
-        // sameSite: 'strict',
-        secure: false
-    }
-}));
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//         httpOnly: true,
+//         sameSite: 'lax',
+//         // sameSite: 'lax',
+//         // sameSite: 'strict',
+//         secure: false
+//     }
+// }));
+// app.use(passport.initialize());
+// app.use(passport.session());
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cookieParser())
