@@ -15,7 +15,7 @@ require('dotenv').config()
 const app = express()
 
 app.use(cors({
-    origin: ['http://localhost:5173'],
+    origin: 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }))
@@ -51,10 +51,10 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        sameSite: 'none',
+        sameSite: 'lax',
         // sameSite: 'lax',
         // sameSite: 'strict',
-        secure: true
+        secure: false
     }
 }));
 app.use(passport.initialize());
