@@ -27,11 +27,17 @@ async function LoginUser(req, res) {
 
         const user = await userModel.findOne({ email: email.toLowerCase() })
 
+        console.log("LOGIN user.findOne", user)
+
         if (!user) {
+            console.log("LOGIN does not exist")
+
             return res.status(404).json({ msg: "User doesn't exist. Please create a new account" })
         }
 
         const passwordMatch = await bcrypt.compare(password, user.password)
+        console.log("LOGIN hashing", passwordMatch)
+
         if (!passwordMatch) {
             return res.status(401).json({ msg: "Incorrect username or password" })
         }
@@ -44,10 +50,15 @@ async function LoginUser(req, res) {
         const refresh_token = GenerateRefreshToken(payload)
         const access_token = GenerateAccessToken(payload)
 
+        console.log("LOGIN tokens", access_token)
+
+
         res.cookie('refreshToken', refresh_token, {
             ...cookieOptions,
             maxAge: 7 * 24 * 60 * 60 * 1000 // in ms (cookie expires in 7 days)
         })
+
+        console.log("LOGIN all good", user)
 
         return res.status(200).json({
             msg: "Login Successful",
