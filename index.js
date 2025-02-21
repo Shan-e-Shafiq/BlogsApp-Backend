@@ -15,17 +15,22 @@ require('dotenv').config()
 const app = express()
 
 app.use(cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true
+    // origin: process.env.CLIENT_URL,
+    // credentials: true,
+    origin: ['http://localhost:5173', 'http://localhost:3000'], // Add any other allowed origins
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true, // Enable if you're using cookies/sessions
+    maxAge: 86400 // Cache preflight requests for 24 hours
 }))
 
-// Add CORS headers to all responses
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173'); // Allow requests from your frontend
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); // Specify allowed methods
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Specify allowed headers
-    next();
-})
+// // Add CORS headers to all responses
+// app.use((req, res, next) => {
+//     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173'); // Allow requests from your frontend
+//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); // Specify allowed methods
+//     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Specify allowed headers
+//     next();
+// })
 
 // PASSPORT.JS SETUP FOR SOCIAL AUTH
 
