@@ -7,10 +7,10 @@ require('dotenv').config()
 
 const cookieOptions = {
     httpOnly: true,
-    sameSite: 'none',
+    sameSite: 'lax',
     // sameSite: 'lax',
     // sameSite:'strict',
-    secure: true,
+    secure: false,
 }
 
 function GenerateAccessToken(payload) {
