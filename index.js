@@ -19,6 +19,14 @@ app.use(cors({
     credentials: true
 }))
 
+// Add CORS headers to all responses
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173'); // Allow requests from your frontend
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); // Specify allowed methods
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Specify allowed headers
+    next();
+})
+
 // PASSPORT.JS SETUP FOR SOCIAL AUTH
 
 passport.use(new GoogleStrategy({
