@@ -65,7 +65,7 @@ app.use(cookieParser())
 // ROUTES
 
 app.get('/', (req, res) => {
-    res.status(200).json({ msg: 'server is up', client: process.env.CLIENT_URL, server: process.env.SERVER_URL, port: process.env.PORT })
+    res.status(200).json({ msg: 'server is up' })
 })
 app.use('/api', routes)
 
@@ -77,9 +77,8 @@ app.use('/api', routes)
 //     return res.status(200).json({ msg: "created" })
 // })
 
-const PORT = process.env.PORT || 3000
 
-app.listen(PORT, async () => {
+app.listen(3000, async () => {
     await ConnectToDB()
     // console.log("http://localhost:3000")
 })
