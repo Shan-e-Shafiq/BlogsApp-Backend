@@ -5,13 +5,13 @@ const facebookUserModel = require('../models/facebookUser.model')
 const bcrypt = require('bcrypt')
 require('dotenv').config()
 
-const cookieOptions = {
-    httpOnly: true,
-    sameSite: 'lax',
-    // sameSite: 'lax',
-    // sameSite:'strict',
-    secure: false,
-}
+// const cookieOptions = {
+//     httpOnly: true,
+//     sameSite: 'lax',
+//     // sameSite: 'lax',
+//     // sameSite:'strict',
+//     secure: false,
+// }
 
 function GenerateAccessToken(payload) {
     return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRY })
@@ -27,16 +27,11 @@ async function LoginUser(req, res) {
 
         const user = await userModel.findOne({ email: email.toLowerCase() })
 
-        console.log("LOGIN user.findOne", user)
-
         if (!user) {
-            console.log("LOGIN does not exist")
-
             return res.status(404).json({ msg: "User doesn't exist. Please create a new account" })
         }
 
         const passwordMatch = await bcrypt.compare(password, user.password)
-        console.log("LOGIN hashing", passwordMatch)
 
         if (!passwordMatch) {
             return res.status(401).json({ msg: "Incorrect username or password" })
@@ -50,15 +45,12 @@ async function LoginUser(req, res) {
         const refresh_token = GenerateRefreshToken(payload)
         const access_token = GenerateAccessToken(payload)
 
-        console.log("LOGIN tokens", access_token)
+        req.session.refreshToken = refresh_token
 
-
-        res.cookie('refreshToken', refresh_token, {
-            ...cookieOptions,
-            maxAge: 7 * 24 * 60 * 60 * 1000 // in ms (cookie expires in 7 days)
-        })
-
-        console.log("LOGIN all good", user)
+        // res.cookie('refreshToken', refresh_token, {
+        //     ...cookieOptions,
+        //     maxAge: 7 * 24 * 60 * 60 * 1000 // in ms (cookie expires in 7 days)
+        // })
 
         return res.status(200).json({
             msg: "Login Successful",
@@ -101,10 +93,12 @@ async function SignupUser(req, res) {
         const refresh_token = GenerateRefreshToken(payload)
         const access_token = GenerateAccessToken(payload)
 
-        res.cookie('refreshToken', refresh_token, {
-            ...cookieOptions,
-            maxAge: 7 * 24 * 60 * 60 * 1000 // in ms (cookie expires in 7 days)
-        })
+        req.session.refreshToken = refresh_token
+
+        // res.cookie('refreshToken', refresh_token, {
+        //     ...cookieOptions,
+        //     maxAge: 7 * 24 * 60 * 60 * 1000 // in ms (cookie expires in 7 days)
+        // })
 
         return res.status(201).json({
             msg: "Account creation Successful",
@@ -122,10 +116,19 @@ async function SignupUser(req, res) {
 
 async function LogoutUser(req, res) {
     try {
-        res.clearCookie('refreshToken', {
-            ...cookieOptions
+        // res.clearCookie('refreshToken', {
+        //     ...cookieOptions
+        // })
+        // return res.status(200).json({ msg: "Logout Successful" })
+
+        req.session.destroy(err => {
+            if (err) {
+                return res.status(500).json({ msg: "Can't logout at this moment. Please try again!" })
+            }
+            res.clearCookie('connect.sid', { path: '/' })
+            return res.status(200).json({ msg: "Logout Successful" })
         })
-        return res.status(200).json({ msg: "Logout Successful" })
+
     } catch (error) {
         // console.log(error)
         return res.status(500).json({ msg: "Internal server error" })
@@ -209,10 +212,11 @@ function SocialLoginSuccess(req, res) {
         const { _id, userType } = req.user._doc
         const payload = { _id, userType }
         const refreshToken = GenerateRefreshToken(payload)
-        res.cookie("refreshToken", refreshToken, {
-            ...cookieOptions,
-            maxAge: 7 * 24 * 60 * 60 * 1000 // in ms (cookie expires in 7 days)
-        })
+        req.session.refreshToken = refreshToken
+        // res.cookie("refreshToken", refreshToken, {
+        //     ...cookieOptions,
+        //     maxAge: 7 * 24 * 60 * 60 * 1000 // in ms (cookie expires in 7 days)
+        // })
         res.redirect(`${process.env.CLIENT_URL}/auth`)
     } catch (error) {
         // console.log(error)
@@ -223,22 +227,43 @@ function SocialLoginSuccess(req, res) {
 function GoogleLogout(req, res) {
     req.logout(err => {
         if (err) { return next(err); }
-        res.clearCookie('refreshToken', {
-            ...cookieOptions
+
+        // res.clearCookie('refreshToken', {
+        //     ...cookieOptions
+        // })
+        // res.clearCookie('connect.sid', { httpOnly: true, sameSite: 'lax' })
+        // return res.status(200).json({ msg: "Logout Successful" })
+
+
+        req.session.destroy(err => {
+            if (err) {
+                return res.status(500).json({ msg: "Can't logout at this moment. Please try again!" })
+            }
+            res.clearCookie('connect.sid', { path: '/' })
+            return res.status(200).json({ msg: "Logout Successful" })
         })
-        res.clearCookie('connect.sid', { httpOnly: true, sameSite: 'lax' })
-        return res.status(200).json({ msg: "Logout Successful" })
+
     });
 }
 
 function FacebookLogout(req, res) {
     req.logout(err => {
         if (err) { return next(err); }
-        res.clearCookie('refreshToken', {
-            ...cookieOptions
+
+        // res.clearCookie('refreshToken', {
+        //     ...cookieOptions
+        // })
+        // res.clearCookie('connect.sid', { httpOnly: true, sameSite: 'lax' })
+        // return res.status(200).json({ msg: "Logout Successful" })
+
+
+        req.session.destroy(err => {
+            if (err) {
+                return res.status(500).json({ msg: "Can't logout at this moment. Please try again!" })
+            }
+            res.clearCookie('connect.sid', { path: '/' })
+            return res.status(200).json({ msg: "Logout Successful" })
         })
-        res.clearCookie('connect.sid', { httpOnly: true, sameSite: 'lax' })
-        return res.status(200).json({ msg: "Logout Successful" })
     });
 }
 

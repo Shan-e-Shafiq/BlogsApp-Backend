@@ -10,6 +10,7 @@ function protect(req, res, next) {
             req.user = payload
             next()
         } else {
+            DestroySessions(req, res)
             return res.status(400).json({ msg: "Bad request" })
         }
     } catch (error) {
@@ -18,10 +19,10 @@ function protect(req, res, next) {
     }
 }
 
-
 function verifyRefreshToken(req, res, next) {
     try {
-        const refreshToken = req?.cookies?.refreshToken
+        // const refreshToken = req?.cookies?.refreshToken
+        const refreshToken = req.session.refreshToken
         if (refreshToken) {
             const payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
             delete payload.iat
@@ -29,6 +30,7 @@ function verifyRefreshToken(req, res, next) {
             req.user = payload
             next()
         } else {
+            DestroySessions(req, res)
             return res.status(400).json({ msg: "Bad request" })
         }
     } catch (error) {
@@ -37,6 +39,16 @@ function verifyRefreshToken(req, res, next) {
     }
 }
 
+function DestroySessions(req, res) {
+    req.session.destroy((err) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ msg: "Internal server error" })
+        }
+        res.clearCookie('connect.sid')
+        res.status(200).json({ msg: "Logout successful" })
+    })
+}
 
 module.exports = {
     protect,
